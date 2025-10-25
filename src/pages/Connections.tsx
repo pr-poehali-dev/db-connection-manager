@@ -63,19 +63,16 @@ export default function Connections() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-6 max-w-7xl">
-        <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-medium mb-1 text-foreground">
-            Подключения к БД
+        <div className="mb-6 animate-fade-in">
+          <h1 className="text-xl font-medium text-foreground">
+            Connections
           </h1>
-          <p className="text-muted-foreground text-sm">
-            Управляйте сохранёнными подключениями к базам данных
-          </p>
         </div>
 
         <div className="mb-6 flex justify-end animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <Button className="gap-2 hover-scale shadow-lg">
-            <Icon name="Plus" size={20} />
-            Добавить подключение
+          <Button size="sm" className="gap-1.5 ripple text-xs h-8 px-3">
+            <Icon name="Plus" size={14} />
+            New Connection
           </Button>
         </div>
 
@@ -83,18 +80,18 @@ export default function Connections() {
           {connections.map((conn, idx) => (
             <Card
               key={conn.id}
-              className="bg-card border border-border hover:border-primary/50 transition-all duration-200 material-shadow hover:material-shadow-lg animate-scale-in cursor-pointer group"
+              className="bg-card border border-border hover:border-border/80 transition-all duration-150 minimal-shadow hover:bg-card/80 animate-scale-in cursor-pointer group"
               style={{ animationDelay: `${idx * 100}ms` }}
             >
               <CardHeader>
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                      <Icon name={getDbIcon(conn.type)} size={20} className="text-primary" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 bg-primary/10 rounded group-hover:bg-primary/15 transition-colors">
+                      <Icon name={getDbIcon(conn.type)} size={16} className="text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-base font-medium mb-0.5">{conn.name}</CardTitle>
-                      <CardDescription className="uppercase text-xs font-medium">
+                      <CardTitle className="text-sm font-medium mb-0">{conn.name}</CardTitle>
+                      <CardDescription className="uppercase text-xs tracking-wide mt-0.5">
                         {conn.type}
                       </CardDescription>
                     </div>
@@ -113,31 +110,31 @@ export default function Connections() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Icon name="Server" size={16} className="text-muted-foreground" />
-                    <span className="text-muted-foreground">Хост:</span>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Icon name="Server" size={12} className="text-muted-foreground" />
+                    <span className="text-muted-foreground">Host:</span>
                     <span className="font-medium text-foreground">{conn.host}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Icon name="Network" size={16} className="text-muted-foreground" />
-                    <span className="text-muted-foreground">Порт:</span>
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Icon name="Network" size={12} className="text-muted-foreground" />
+                    <span className="text-muted-foreground">Port:</span>
                     <span className="font-medium text-foreground">{conn.port}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Icon name="HardDrive" size={16} className="text-muted-foreground" />
-                    <span className="text-muted-foreground">База:</span>
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <Icon name="HardDrive" size={12} className="text-muted-foreground" />
+                    <span className="text-muted-foreground">Database:</span>
                     <span className="font-medium text-foreground">{conn.database}</span>
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-6">
-                  <Button variant="outline" size="sm" className="flex-1 gap-2">
-                    <Icon name="Play" size={16} />
-                    Подключиться
+                <div className="flex gap-1.5 mt-3">
+                  <Button variant="outline" size="sm" className="flex-1 gap-1.5 ripple text-xs h-7">
+                    <Icon name="Play" size={12} />
+                    Connect
                   </Button>
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Icon name="Settings" size={16} />
+                  <Button variant="outline" size="sm" className="ripple h-7 w-7 p-0">
+                    <Icon name="Settings" size={12} />
                   </Button>
                 </div>
               </CardContent>

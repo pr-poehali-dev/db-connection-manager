@@ -79,21 +79,18 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8 animate-fade-in">
+        <div className="flex items-center justify-between mb-6 animate-fade-in">
           <div>
-            <h1 className="text-3xl font-medium mb-1 text-foreground">
-              DB Manager
+            <h1 className="text-xl font-medium text-foreground">
+              Connections
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Управление подключениями к базам данных
-            </p>
           </div>
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button size="lg" className="gap-2 hover-scale shadow-lg">
-                <Icon name="Plus" size={20} />
-                Новое подключение
+              <Button size="sm" className="gap-1.5 ripple text-xs h-8 px-3">
+                <Icon name="Plus" size={14} />
+                New Connection
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -173,18 +170,18 @@ export default function Index() {
             <Card
               key={conn.id}
               onClick={() => navigate('/database')}
-              className="bg-card border border-border hover:border-primary/50 transition-all duration-200 material-shadow hover:material-shadow-lg animate-scale-in cursor-pointer group"
+              className="bg-card border border-border hover:border-border/80 transition-all duration-150 minimal-shadow hover:bg-card/80 animate-scale-in cursor-pointer group"
               style={{ animationDelay: `${idx * 50}ms` }}
             >
               <CardHeader>
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                      <Icon name={getDbIcon(conn.type)} size={20} className="text-primary" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 bg-primary/10 rounded group-hover:bg-primary/15 transition-colors">
+                      <Icon name={getDbIcon(conn.type)} size={16} className="text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-base font-medium mb-0.5">{conn.name}</CardTitle>
-                      <p className="text-xs text-muted-foreground uppercase font-medium">
+                      <CardTitle className="text-sm font-medium mb-0">{conn.name}</CardTitle>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide mt-0.5">
                         {conn.type}
                       </p>
                     </div>
@@ -202,37 +199,38 @@ export default function Index() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Icon name="Server" size={14} />
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Icon name="Server" size={12} />
                     <span className="truncate">{conn.host}:{conn.port}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Icon name="HardDrive" size={14} />
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Icon name="HardDrive" size={12} />
                     <span className="truncate">{conn.database}</span>
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-4">
+                <div className="flex gap-1.5 mt-3">
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="flex-1 gap-2"
+                    className="flex-1 gap-1.5 ripple text-xs h-7"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
                   >
-                    <Icon name="Play" size={14} />
-                    Подключиться
+                    <Icon name="Play" size={12} />
+                    Connect
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
+                    className="ripple h-7 w-7 p-0"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
                   >
-                    <Icon name="Settings" size={14} />
+                    <Icon name="Settings" size={12} />
                   </Button>
                 </div>
               </CardContent>

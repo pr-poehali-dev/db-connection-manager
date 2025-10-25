@@ -61,14 +61,14 @@ export default function Database() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-6 max-w-7xl">
-        <div className="mb-8 animate-fade-in">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Icon name="Database" size={24} className="text-primary" />
+        <div className="mb-6 animate-fade-in">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 bg-primary/10 rounded">
+              <Icon name="Database" size={16} className="text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-medium text-foreground">
-                Структура базы данных
+              <h1 className="text-xl font-medium text-foreground">
+                Database Structure
               </h1>
               <p className="text-muted-foreground text-xs">
                 Production DB • main_db
@@ -78,11 +78,11 @@ export default function Database() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="bg-card border border-border material-shadow lg:col-span-1 animate-scale-in">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Icon name="Table" size={20} />
-                Таблицы ({tables.length})
+          <Card className="bg-card border border-border minimal-shadow lg:col-span-1 animate-scale-in">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-1.5 text-sm font-medium">
+                <Icon name="Table" size={14} />
+                Tables ({tables.length})
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -92,25 +92,25 @@ export default function Database() {
                     <div
                       key={table.name}
                       onClick={() => setSelectedTable(table)}
-                      className={`p-4 rounded-lg cursor-pointer transition-all duration-200 animate-fade-in ${
+                      className={`p-2.5 rounded cursor-pointer transition-all duration-150 animate-fade-in ${
                         selectedTable?.name === table.name
                           ? 'bg-primary/10 border border-primary'
-                          : 'bg-muted/30 hover:bg-muted/50'
+                          : 'bg-muted/20 hover:bg-muted/30'
                       }`}
                       style={{ animationDelay: `${idx * 50}ms` }}
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <Icon name="Table2" size={16} className="text-primary" />
-                          <span className="font-medium">{table.name}</span>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-1.5">
+                          <Icon name="Table2" size={12} className="text-primary" />
+                          <span className="font-medium text-xs">{table.name}</span>
                         </div>
-                        <Icon name="ChevronRight" size={16} className="text-muted-foreground" />
+                        <Icon name="ChevronRight" size={12} className="text-muted-foreground" />
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Icon name="Hash" size={12} />
-                        <span>{table.rowCount.toLocaleString()} строк</span>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Icon name="Hash" size={10} />
+                        <span>{table.rowCount.toLocaleString()} rows</span>
                         <span>•</span>
-                        <span>{table.columns.length} столбцов</span>
+                        <span>{table.columns.length} cols</span>
                       </div>
                     </div>
                   ))}
@@ -119,33 +119,33 @@ export default function Database() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card border border-border material-shadow lg:col-span-2 animate-scale-in" style={{ animationDelay: '100ms' }}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Icon name="Columns3" size={20} />
-                {selectedTable ? `Структура таблицы: ${selectedTable.name}` : 'Выберите таблицу'}
+          <Card className="bg-card border border-border minimal-shadow lg:col-span-2 animate-scale-in" style={{ animationDelay: '100ms' }}>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-1.5 text-sm font-medium">
+                <Icon name="Columns3" size={14} />
+                {selectedTable ? `Table: ${selectedTable.name}` : 'Select a table'}
               </CardTitle>
             </CardHeader>
             <CardContent>
               {selectedTable ? (
                 <ScrollArea className="h-[600px]">
                   <div className="space-y-3">
-                    <div className="grid grid-cols-4 gap-4 px-4 py-3 bg-muted rounded-lg font-medium text-sm">
-                      <div>Название</div>
-                      <div>Тип данных</div>
+                    <div className="grid grid-cols-4 gap-4 px-3 py-2 bg-muted/30 rounded font-medium text-xs">
+                      <div>Name</div>
+                      <div>Type</div>
                       <div>Nullable</div>
-                      <div>Ключ</div>
+                      <div>Key</div>
                     </div>
                     
                     {selectedTable.columns.map((column, idx) => (
                       <div
                         key={column.name}
-                        className="grid grid-cols-4 gap-4 px-4 py-3 bg-muted/20 border border-border rounded-lg hover:border-primary/50 transition-all animate-fade-in"
+                        className="grid grid-cols-4 gap-4 px-3 py-2 bg-muted/10 border border-border rounded hover:border-border/80 transition-all animate-fade-in"
                         style={{ animationDelay: `${idx * 30}ms` }}
                       >
-                        <div className="flex items-center gap-2">
-                          <Icon name="Columns2" size={14} className="text-muted-foreground" />
-                          <span className="font-medium">{column.name}</span>
+                        <div className="flex items-center gap-1.5">
+                          <Icon name="Columns2" size={11} className="text-muted-foreground" />
+                          <span className="font-medium text-xs">{column.name}</span>
                         </div>
                         <div>
                           <Badge variant="outline" className="font-mono text-xs">
