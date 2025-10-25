@@ -64,8 +64,7 @@ export default {
 				}
 			},
 			fontFamily: {
-				sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
-				heading: ['Rubik', 'system-ui', 'sans-serif']
+				sans: ['Roboto', 'system-ui', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

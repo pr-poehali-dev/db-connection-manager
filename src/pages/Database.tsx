@@ -59,18 +59,18 @@ export default function Database() {
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto p-6 max-w-7xl">
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary/10 rounded-lg">
-              <Icon name="Database" size={28} className="text-primary" />
+              <Icon name="Database" size={24} className="text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl font-heading font-bold text-foreground">
+              <h1 className="text-3xl font-medium text-foreground">
                 Структура базы данных
               </h1>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs">
                 Production DB • main_db
               </p>
             </div>
@@ -78,7 +78,7 @@ export default function Database() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="glass-effect border-2 lg:col-span-1 animate-scale-in">
+          <Card className="bg-card border border-border material-shadow lg:col-span-1 animate-scale-in">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Icon name="Table" size={20} />
@@ -92,10 +92,10 @@ export default function Database() {
                     <div
                       key={table.name}
                       onClick={() => setSelectedTable(table)}
-                      className={`p-4 rounded-lg cursor-pointer transition-all duration-200 hover:bg-accent animate-fade-in ${
+                      className={`p-4 rounded-lg cursor-pointer transition-all duration-200 animate-fade-in ${
                         selectedTable?.name === table.name
-                          ? 'bg-primary/10 border-2 border-primary'
-                          : 'bg-muted/50 hover:bg-muted'
+                          ? 'bg-primary/10 border border-primary'
+                          : 'bg-muted/30 hover:bg-muted/50'
                       }`}
                       style={{ animationDelay: `${idx * 50}ms` }}
                     >
@@ -119,7 +119,7 @@ export default function Database() {
             </CardContent>
           </Card>
 
-          <Card className="glass-effect border-2 lg:col-span-2 animate-scale-in" style={{ animationDelay: '100ms' }}>
+          <Card className="bg-card border border-border material-shadow lg:col-span-2 animate-scale-in" style={{ animationDelay: '100ms' }}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Icon name="Columns3" size={20} />
@@ -140,7 +140,7 @@ export default function Database() {
                     {selectedTable.columns.map((column, idx) => (
                       <div
                         key={column.name}
-                        className="grid grid-cols-4 gap-4 px-4 py-4 bg-card border rounded-lg hover:border-primary/50 transition-all animate-fade-in"
+                        className="grid grid-cols-4 gap-4 px-4 py-3 bg-muted/20 border border-border rounded-lg hover:border-primary/50 transition-all animate-fade-in"
                         style={{ animationDelay: `${idx * 30}ms` }}
                       >
                         <div className="flex items-center gap-2">

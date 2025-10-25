@@ -61,19 +61,19 @@ export default function Connections() {
   const [connections] = useState<Connection[]>(mockConnections);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto p-6 max-w-7xl">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl font-heading font-bold mb-2 text-foreground">
+          <h1 className="text-3xl font-medium mb-1 text-foreground">
             Подключения к БД
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-sm">
             Управляйте сохранёнными подключениями к базам данных
           </p>
         </div>
 
         <div className="mb-6 flex justify-end animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <Button className="gap-2 hover-scale">
+          <Button className="gap-2 hover-scale shadow-lg">
             <Icon name="Plus" size={20} />
             Добавить подключение
           </Button>
@@ -83,17 +83,17 @@ export default function Connections() {
           {connections.map((conn, idx) => (
             <Card
               key={conn.id}
-              className="glass-effect border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl animate-scale-in cursor-pointer group"
+              className="bg-card border border-border hover:border-primary/50 transition-all duration-200 material-shadow hover:material-shadow-lg animate-scale-in cursor-pointer group"
               style={{ animationDelay: `${idx * 100}ms` }}
             >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
-                      <Icon name={getDbIcon(conn.type)} size={24} className="text-primary" />
+                    <div className="p-2.5 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                      <Icon name={getDbIcon(conn.type)} size={20} className="text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl mb-1">{conn.name}</CardTitle>
+                      <CardTitle className="text-base font-medium mb-0.5">{conn.name}</CardTitle>
                       <CardDescription className="uppercase text-xs font-medium">
                         {conn.type}
                       </CardDescription>
