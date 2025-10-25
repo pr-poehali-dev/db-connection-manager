@@ -1,86 +1,243 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
+
+interface Connection {
+  id: string;
+  name: string;
+  type: 'postgresql' | 'mysql' | 'mongodb';
+  host: string;
+  port: number;
+  database: string;
+  status: 'connected' | 'disconnected';
+}
+
+const initialConnections: Connection[] = [
+  {
+    id: '1',
+    name: 'Production DB',
+    type: 'postgresql',
+    host: 'prod.example.com',
+    port: 5432,
+    database: 'main_db',
+    status: 'connected'
+  },
+  {
+    id: '2',
+    name: 'Development DB',
+    type: 'mysql',
+    host: 'dev.example.com',
+    port: 3306,
+    database: 'dev_db',
+    status: 'disconnected'
+  }
+];
 
 export default function Index() {
   const navigate = useNavigate();
+  const [connections, setConnections] = useState<Connection[]>(initialConnections);
+  const [open, setOpen] = useState(false);
+  const [newConnection, setNewConnection] = useState({
+    name: '',
+    type: 'postgresql' as const,
+    host: '',
+    port: 5432,
+    database: ''
+  });
+
+  const handleAddConnection = () => {
+    const connection: Connection = {
+      id: Date.now().toString(),
+      ...newConnection,
+      status: 'disconnected'
+    };
+    setConnections([...connections, connection]);
+    setNewConnection({ name: '', type: 'postgresql', host: '', port: 5432, database: '' });
+    setOpen(false);
+  };
+
+  const getDbIcon = (type: string) => {
+    switch (type) {
+      case 'postgresql':
+        return 'Database';
+      case 'mysql':
+        return 'Database';
+      case 'mongodb':
+        return 'Database';
+      default:
+        return 'Database';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background flex items-center justify-center p-6">
-      <div className="max-w-5xl w-full">
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-2xl mb-6">
-            <Icon name="Database" size={56} className="text-primary" />
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8 animate-fade-in">
+          <div>
+            <h1 className="text-4xl font-heading font-bold mb-2 text-foreground">
+              DB Manager
+            </h1>
+            <p className="text-muted-foreground">
+              Управление подключениями к базам данных
+            </p>
           </div>
-          <h1 className="text-5xl font-heading font-bold mb-4 text-foreground">
-            DB Manager
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Управление подключениями к базам данных и визуализация структуры
-          </p>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card
-            onClick={() => navigate('/connections')}
-            className="glass-effect border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl cursor-pointer group animate-scale-in"
-          >
-            <CardHeader>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-4 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
-                  <Icon name="Network" size={32} className="text-primary" />
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="gap-2 hover-scale">
+                <Icon name="Plus" size={20} />
+                Новое подключение
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">Добавить подключение</DialogTitle>
+                <DialogDescription>
+                  Заполните данные для нового подключения к базе данных
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="name">Название</Label>
+                  <Input
+                    id="name"
+                    placeholder="Production DB"
+                    value={newConnection.name}
+                    onChange={(e) => setNewConnection({ ...newConnection, name: e.target.value })}
+                  />
                 </div>
                 <div>
-                  <CardTitle className="text-2xl mb-1">Подключения</CardTitle>
-                  <CardDescription>Управление сохранёнными подключениями</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-6">
-                Просмотр и редактирование подключений к PostgreSQL, MySQL и MongoDB
-              </p>
-              <Button className="w-full gap-2 group-hover:shadow-lg transition-shadow">
-                Открыть подключения
-                <Icon name="ArrowRight" size={18} />
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card
-            onClick={() => navigate('/database')}
-            className="glass-effect border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl cursor-pointer group animate-scale-in"
-            style={{ animationDelay: '100ms' }}
-          >
-            <CardHeader>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-4 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
-                  <Icon name="Table" size={32} className="text-primary" />
+                  <Label htmlFor="type">Тип базы данных</Label>
+                  <Select
+                    value={newConnection.type}
+                    onValueChange={(value: 'postgresql' | 'mysql' | 'mongodb') => {
+                      const defaultPorts = { postgresql: 5432, mysql: 3306, mongodb: 27017 };
+                      setNewConnection({ ...newConnection, type: value, port: defaultPorts[value] });
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="postgresql">PostgreSQL</SelectItem>
+                      <SelectItem value="mysql">MySQL</SelectItem>
+                      <SelectItem value="mongodb">MongoDB</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
-                  <CardTitle className="text-2xl mb-1">База данных</CardTitle>
-                  <CardDescription>Структура и содержимое таблиц</CardDescription>
+                  <Label htmlFor="host">Хост</Label>
+                  <Input
+                    id="host"
+                    placeholder="localhost или prod.example.com"
+                    value={newConnection.host}
+                    onChange={(e) => setNewConnection({ ...newConnection, host: e.target.value })}
+                  />
                 </div>
+                <div>
+                  <Label htmlFor="port">Порт</Label>
+                  <Input
+                    id="port"
+                    type="number"
+                    value={newConnection.port}
+                    onChange={(e) => setNewConnection({ ...newConnection, port: parseInt(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="database">База данных</Label>
+                  <Input
+                    id="database"
+                    placeholder="main_db"
+                    value={newConnection.database}
+                    onChange={(e) => setNewConnection({ ...newConnection, database: e.target.value })}
+                  />
+                </div>
+                <Button onClick={handleAddConnection} className="w-full gap-2 mt-6">
+                  <Icon name="Plus" size={18} />
+                  Добавить подключение
+                </Button>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-6">
-                Исследование структуры базы данных, просмотр таблиц и колонок
-              </p>
-              <Button className="w-full gap-2 group-hover:shadow-lg transition-shadow">
-                Открыть базу данных
-                <Icon name="ArrowRight" size={18} />
-              </Button>
-            </CardContent>
-          </Card>
+            </DialogContent>
+          </Dialog>
         </div>
 
-        <div className="mt-12 text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
-          <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
-            <Icon name="Shield" size={16} />
-            Все подключения защищены шифрованием
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {connections.map((conn, idx) => (
+            <Card
+              key={conn.id}
+              onClick={() => navigate('/database')}
+              className="glass-effect border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl animate-scale-in cursor-pointer group"
+              style={{ animationDelay: `${idx * 50}ms` }}
+            >
+              <CardHeader>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors">
+                      <Icon name={getDbIcon(conn.type)} size={24} className="text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg mb-1">{conn.name}</CardTitle>
+                      <p className="text-xs text-muted-foreground uppercase font-medium">
+                        {conn.type}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge
+                    variant={conn.status === 'connected' ? 'default' : 'secondary'}
+                    className="gap-1"
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        conn.status === 'connected' ? 'bg-green-500' : 'bg-gray-400'
+                      }`}
+                    />
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Icon name="Server" size={14} />
+                    <span className="truncate">{conn.host}:{conn.port}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Icon name="HardDrive" size={14} />
+                    <span className="truncate">{conn.database}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 gap-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Icon name="Play" size={14} />
+                    Подключиться
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Icon name="Settings" size={14} />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
